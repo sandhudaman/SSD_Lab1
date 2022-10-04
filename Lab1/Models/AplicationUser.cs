@@ -25,7 +25,7 @@ namespace Lab1.Models
         /// Date time variable to store Date of Birth
         /// </summary>
         [Display(Name = "Birth Date")]
-        public DateTime ?DateOfBirth { get;set;}
+        public DateTime ?DateOfBirth { get; set; } 
 
 
     }

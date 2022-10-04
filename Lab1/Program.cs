@@ -1,5 +1,3 @@
-
-
 using Lab1.Data;
 using Lab1.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Configuration;
 
 namespace Lab1
 {
@@ -30,7 +29,17 @@ namespace Lab1
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
-        
+            //Initialize app secrets
+            var configuration = app.Services.GetService<IConfiguration>();
+            var hosting = app.Services.GetService<IWebHostEnvironment>();
+            
+            
+            if (hosting.IsDevelopment())
+            {
+                var secrets = configuration.GetSection("Secrets").Get<AppSecrets>();
+                DbInitializer.appSecrets = secrets;
+            }
+
             using (var scope = app.Services.CreateScope())
             {
                 DbInitializer.SeedUsersAndRoles(scope.ServiceProvider).Wait();
